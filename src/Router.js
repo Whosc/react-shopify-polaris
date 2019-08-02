@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import {
   BrowserRouter,
   Route,
-  Link
+  // Link,
+  Switch,
+  Redirect
 } from 'react-router-dom';
 
-import productList from './pages/Admin/productList';
+import productList from './pages/Admin/OnPageSEO/Products/ProductList/productList';
 import dashboard from './pages/Admin/dashboard';
 
 class BasicRoute  extends Component {
@@ -13,13 +15,16 @@ class BasicRoute  extends Component {
     return (
       <BrowserRouter>
         <div>
-          <ul>
-            <li><Link to='/'>首页</Link></li>
-            <li><Link to='/product'>产品页面</Link></li>
-          </ul>
-          <hr/>
-          <Route exact path="/"  component={dashboard} />
-          <Route path="/product" component={productList} />
+          <Switch>
+            <Route exact path="/" render={() => <Redirect to='/admin/dashboard'></Redirect>} />
+            <Route exact path="/admin" render={() => <Redirect to='/admin/dashboard'></Redirect>} />
+            <Route path="/admin/dashboard"  component={dashboard} />
+
+            <Route exact path="/admin/on-page-seo" render={() => <Redirect to='/admin/on-page-seo/products'></Redirect>} />
+            <Route path="/admin/on-page-seo/products" component={productList} />
+
+            <Redirect to="/"></Redirect>
+          </Switch>
         </div>
       </BrowserRouter>
     );
