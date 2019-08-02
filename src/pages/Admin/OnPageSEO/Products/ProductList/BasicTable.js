@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { DataTable , TextField , Icon , Link , Thumbnail , Stack , Badge} from '@shopify/polaris';
-import { SearchMinor } from '@shopify/polaris-icons';
+import { SearchMinor , ArrowRightMinor} from '@shopify/polaris-icons';
 
 import './productList.css';
 
@@ -25,9 +25,8 @@ class BasicTable extends Component {
         />,
         <Link url="https://www.example.com">Emerald Silk Gown</Link>,
         'AKUANA', 
-        '',
-        <Stack><Badge color="indigo" >100</Badge></Stack>,
-        
+        <Stack color="indigo"><Badge  color="indigo" >well done</Badge></Stack>,
+        <div className="center"><span className="success">100</span></div>,
       ],
       [
         <Thumbnail
@@ -35,8 +34,9 @@ class BasicTable extends Component {
           alt="Black choker necklace"
         />,
         <Link url="https://www.example.com">Mauve Cashmere Scarf</Link>,
-        124533, 83, 
-        '$19,090.00'
+        <Link url="https://www.example.com"><div><span className="addkeys"></span>  Add a keyword</div></Link>,
+        <Link url="https://www.example.com"><div><span className="seoissues">3</span> warnings</div></Link>,
+        <Link url="https://www.example.com"><Icon source={ArrowRightMinor} color="indigo" /></Link>,
       ],
       [
         <Thumbnail
@@ -44,9 +44,9 @@ class BasicTable extends Component {
           alt="Black choker necklace"
         />,
         <Link url="https://www.example.com">Navy Merino Wool Blazer with khaki chinos and yellow belt</Link>,
-        124518,
-        32,
-        '$14,240.00',
+        <div><span className="addkeys"></span>  Add a keyword</div>, 
+        <div><span className="seoissues">5</span> warnings</div>, 
+        <Icon source={ArrowRightMinor} color="indigo" />,
       ],
     ];
 
@@ -57,9 +57,10 @@ class BasicTable extends Component {
             value={this.state.value} 
             onChange={this.handleChange}
             placeholder="input search text"
-            prefix={<Icon source={SearchMinor} color="inkLighter" />}
+            prefix={<Icon source={SearchMinor} color="green" />}
           />
         </div>
+        
         <DataTable
           columnContentTypes={[
             'text',
