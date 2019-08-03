@@ -14,6 +14,8 @@ class BasicTable extends Component {
 
   state = {
     value: '',
+    page:'1',
+    size:'10',
     products:[],
   };
 
@@ -37,15 +39,17 @@ class BasicTable extends Component {
   }
 
   handleChange = (value) => {
-    this.setState({value});
-    this.getProductList({q:value});
+    this.setState({value:value});
+    console.log(value);
+    console.log(this.state.value);
+    this.getProductList();
 
   };
 
-  getProductList = async (params) => {
-    const response = await reqGetProductList(params)
+  getProductList = async () => {
+    const response = await reqGetProductList({page:this.state.page,size:this.state.size,q:this.state.value})
     if (response.code==='200') {
-      // console.log(response.data.result);
+      // console.log(response.data.result); 
       const products  = response.data.result.map((item , key)=>{
         return ([
             <Thumbnail source={item.imgsrc} alt={item.title} />,
@@ -98,6 +102,9 @@ class BasicTable extends Component {
           }}
           hasNext
           onNext={() => {
+            // this.setState({
+            //   page:this.state.page + 1 
+            // });
             console.log('Next');
           }}
         />

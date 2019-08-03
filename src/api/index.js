@@ -8,5 +8,4 @@ export const reqLogin = (params) => ajax(API_DOMAIN + '/login', params, 'POST');
 
 /** On Page SEO 模块 */
 
-export const reqGetProductList = (params) => ajax(API_DOMAIN + '/api/v1/getAllProducts/1/10', params, 'GET'); //获取产品列表
-export const reqSearchProducts = (params) => ajax(API_DOMAIN + '/api/v1/getAllProducts/1/10/dd', params, 'GET'); //获取产品列表
+export const reqGetProductList = (params) => ajax(API_DOMAIN + '/api/v1/getAllProducts', params, 'GET'); //获取产品列表
