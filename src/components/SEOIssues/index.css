@@ -1,0 +1,18 @@
+.welldone{
+  padding:  0 0.5rem;
+  background-color:#50B83C;
+  display: block;
+  text-align: center;
+  border-radius:1rem; 
+  color:#fff;
+  width: 80%;
+  min-width: 90px;
+}
+
+.seoissues{
+  padding: 0.2rem;
+  background-color: #F49342;
+  color:#fff;
+  border-radius:1rem; 
+  
+}

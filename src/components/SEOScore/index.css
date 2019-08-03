@@ -1,0 +1,15 @@
+.success{
+  background-color:#50B83C;
+}
+
+.error{
+  background-color: #F49342;
+}
+
+.seoscore{
+  padding: 0.5rem 0.7rem;
+  color: #fff;
+  border-radius:0.35rem; 
+  display: block;
+  width:70%;
+}

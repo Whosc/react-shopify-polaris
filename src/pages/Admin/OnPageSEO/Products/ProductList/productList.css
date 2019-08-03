@@ -6,22 +6,9 @@
   text-align: center;
 }
 
-.success{
-  padding: 0.5rem 0.7rem;
-  background-color: #108043;
-  color: #fff;
-  border-radius:0.35rem; 
-}
-.seoissues{
-  padding: 0.2rem;
-  background-color:#C05717;
-  color:#fff;
-  border-radius:1rem; 
-}
-
 .addkeys{
   padding:0 0.7rem;
-  background-color:#C05717;
+  background-color: #F49342;
   color:#fff;
   border-radius:1rem; 
   height: 0rem;
