@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { DataTable , TextField , Icon , Link , Thumbnail} from '@shopify/polaris';
-import { SearchMinor , ArrowRightMinor} from '@shopify/polaris-icons';
+import { DataTable , TextField , Icon , Link , Thumbnail , Pagination} from '@shopify/polaris';
+import { SearchMinor } from '@shopify/polaris-icons';
 
 import SEOScore from '../../../../../components/SEOScore';
 import SEOIssues from '../../../../../components/SEOIssues';
+
+import { reqGetProductList } from '../../../../../api';
 
 
 import './productList.css';
@@ -12,48 +14,66 @@ class BasicTable extends Component {
 
   state = {
     value: '',
+    products:[],
   };
+
+ 
+
+  initColumn = () => {
+    this.columnContentTypes = [
+      'text',
+      'text',
+      'text',
+      'text',
+      'text',
+    ];
+    this.headings = [
+      '',
+      'Title',
+      'Keyword',
+      'SEO issues',
+      'SEO Score',
+    ];
+  }
 
   handleChange = (value) => {
     this.setState({value});
-    console.log(value);
+    this.getProductList({q:value});
+
   };
+
+  getProductList = async (params) => {
+    const response = await reqGetProductList(params)
+    if (response.code==='200') {
+      // console.log(response.data.result);
+      const products  = response.data.result.map((item , key)=>{
+        return ([
+            <Thumbnail source={item.imgsrc} alt={item.title} />,
+            <Link url="https://www.example.com">{item.title}</Link>,
+            <span>{item.primary_keywords?item.primary_keywords:<div><span className="addkeys"></span>  Add a keyword</div>}</span>, 
+            <SEOIssues issues={item.seo_issues} />,
+            <div className="center"><SEOScore score={item.seo_score}/></div>,
+          ]);
+      });
+
+      this.setState({
+        products:products
+      });
+    }
+  }
+
+
+  componentWillMount () {
+    this.initColumn()
+  }
+
+  componentDidMount () {
+    this.getProductList()
+  }
 
 
   render() {
-    const rows = [
-      [
-        <Thumbnail
-          source="https://burst.shopifycdn.com/photos/black-leather-choker-necklace_373x@2x.jpg"
-          alt="Black choker necklace"
-        />,
-        <Link url="https://www.example.com">Emerald Silk Gown</Link>,
-        'AKUANA', 
-        <SEOIssues issues="0" />,
-        <div className="center"><SEOScore score="100" /></div>,
-      ],
-      [
-        <Thumbnail
-          source="https://burst.shopifycdn.com/photos/black-leather-choker-necklace_373x@2x.jpg"
-          alt="Black choker necklace"
-        />,
-        <Link url="https://www.example.com">Mauve Cashmere Scarf</Link>,
-        <Link url="https://www.example.com"><div><span className="addkeys"></span>  Add a keyword</div></Link>,
-        <Link url="https://www.example.com"><SEOIssues issues="12"  /></Link>,
-        <div className="center"><SEOScore score="12" /></div>,
-      ],
-      [
-        <Thumbnail
-          source="https://burst.shopifycdn.com/photos/black-leather-choker-necklace_373x@2x.jpg"
-          alt="Black choker necklace"
-        />,
-        <Link url="https://www.example.com">Navy Merino Wool Blazer with khaki chinos and yellow belt</Link>,
-        <div><span className="addkeys"></span>  Add a keyword</div>, 
-        <SEOIssues issues="0" />, 
-        <Icon source={ArrowRightMinor} color="indigo" />,
-      ],
-    ];
-
+    
     return (
       <div>
         <div className="searchInput">
@@ -64,27 +84,23 @@ class BasicTable extends Component {
             prefix={<Icon source={SearchMinor}  />}
           />
         </div>
-        
         <DataTable
-          columnContentTypes={[
-            'text',
-            'text',
-            'text',
-            'text',
-            'text',
-          ]}
-          headings={[
-            '',
-            'Title',
-            'Keyword',
-            'SEO issues',
-            'SEO Score',
-          ]}
-          rows={rows}
+          columnContentTypes={ this.columnContentTypes }
+          headings={this.headings}
+          rows={this.state.products}
           // totals={['', '', '', 255, '$155,830.00']}
-
           verticalAlign="middle"
         /> 
+         <Pagination
+          hasPrevious
+          onPrevious={() => {
+            console.log('Previous');
+          }}
+          hasNext
+          onNext={() => {
+            console.log('Next');
+          }}
+        />
       </div>
     );
   }
