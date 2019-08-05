@@ -52,10 +52,10 @@ class BasicTable extends Component {
       const products  = response.data.result.map((item , key)=>{
         return ([
             <Thumbnail source={item.imgsrc} alt={item.title} />,
-            <Link url="https://www.example.com">{item.title}</Link>,
-            <span>{item.primary_keywords?item.primary_keywords:<div><span className="addkeys"></span>  Add a keyword</div>}</span>, 
-            <SEOIssues issues={item.seo_issues} />,
-            <div className="center"><SEOScore score={item.seo_score}/></div>,
+            <Link url = {`/admin/on-page-seo/productbyid/${item.id}`} >{item.title}</Link>,
+            <Link url = {`/admin/on-page-seo/productbyid/${item.id}`} ><span>{item.primary_keywords?item.primary_keywords:<div><span className="addkeys"></span>  Add a keyword</div>}</span></Link>,
+            <Link url = {`/admin/on-page-seo/productbyid/${item.id}`} ><SEOIssues issues={item.seo_issues} /></Link>,
+            <Link url = {`/admin/on-page-seo/productbyid/${item.id}`} ><div className="center"><SEOScore score={item.seo_score}/></div></Link>,
           ]);
       });
       // 更新产品列表数据
