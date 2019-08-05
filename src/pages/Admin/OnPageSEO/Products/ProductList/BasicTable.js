@@ -14,13 +14,16 @@ class BasicTable extends Component {
 
   state = {
     value: '',
-    page:'1',
-    size:'10',
+    page: 1,
+    size: 10,
+    hasPrevious : false,
+    hasNext : true,
+    total:0,
     products:[],
   };
 
  
-
+  // 初始化表格
   initColumn = () => {
     this.columnContentTypes = [
       'text',
@@ -38,16 +41,12 @@ class BasicTable extends Component {
     ];
   }
 
-  handleChange = (value) => {
-    this.setState({value:value});
-    console.log(value);
-    console.log(this.state.value);
-    this.getProductList();
-
-  };
-
+  
+  // 获取并更新产品数据
   getProductList = async () => {
-    const response = await reqGetProductList({page:this.state.page,size:this.state.size,q:this.state.value})
+    const params = {page:this.state.page,size:this.state.size,q:this.state.value};
+    // console.log(params);
+    const response = await reqGetProductList(params)
     if (response.code==='200') {
       // console.log(response.data.result); 
       const products  = response.data.result.map((item , key)=>{
@@ -59,12 +58,47 @@ class BasicTable extends Component {
             <div className="center"><SEOScore score={item.seo_score}/></div>,
           ]);
       });
-
+      // 更新产品列表数据
       this.setState({
         products:products
       });
+
+      // 更新分页数据
+      if(this.state.page > 1){
+        this.setState({
+          hasPrevious:true
+        });
+      }else{
+        this.setState({
+          hasPrevious:false
+        });
+      }
+
+      const maxPage =  Math.ceil(response.data.count / this.state.size);
+      if(this.state.page < maxPage){
+        this.setState({
+          hasNext:true
+        });
+      }else{
+        this.setState({
+          hasNext:false
+        });
+      }
+
+      this.setState({
+        total:response.data.count
+      });
+
     }
   }
+
+
+  handleChange = (value) => {
+    this.setState(({value:value}),()=>{
+        // console.log(this.state.value);
+        this.getProductList();
+    });
+  };
 
 
   componentWillMount () {
@@ -94,19 +128,24 @@ class BasicTable extends Component {
           rows={this.state.products}
           // totals={['', '', '', 255, '$155,830.00']}
           verticalAlign="middle"
+          footerContent={`Showing ${this.state.products.length} of ${this.state.total} results`}
         /> 
-         <Pagination
-          hasPrevious
+        <Pagination
+          hasPrevious = {this.state.hasPrevious}
           onPrevious={() => {
-            console.log('Previous');
+            this.setState(({page:this.state.page - 1}),()=>{
+                this.getProductList();
+            });
           }}
-          hasNext
+
+          hasNext = {this.state.hasNext}
           onNext={() => {
-            // this.setState({
-            //   page:this.state.page + 1 
-            // });
-            console.log('Next');
+            this.setState(({page:this.state.page + 1}),()=>{
+                this.getProductList();
+            });
           }}
+         
+          
         />
       </div>
     );
